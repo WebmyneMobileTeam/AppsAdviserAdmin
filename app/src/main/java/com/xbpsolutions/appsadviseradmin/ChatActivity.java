@@ -86,7 +86,7 @@ public class ChatActivity extends AppCompatActivity implements View.OnClickListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);
 
-       user= FirebaseAuth.getInstance().getCurrentUser();
+        user = FirebaseAuth.getInstance().getCurrentUser();
 
         recyclerViewChat = (RecyclerView) findViewById(R.id.recyclerChat);
         mLinearLayoutManager = new LinearLayoutManager(ChatActivity.this);
@@ -123,6 +123,8 @@ public class ChatActivity extends AppCompatActivity implements View.OnClickListe
                 viewHolder.txtChatText.setText(friendlyMessage.message);
                 if (friendlyMessage.senderImage != null && !friendlyMessage.senderImage.isEmpty()) {
                     Glide.with(ChatActivity.this).load(Uri.parse(friendlyMessage.senderImage)).asBitmap().into(viewHolder.imgChatIcon);
+                } else {
+                    viewHolder.imgChatIcon.setImageResource(R.drawable.ic_customer_service);
                 }
 
 
