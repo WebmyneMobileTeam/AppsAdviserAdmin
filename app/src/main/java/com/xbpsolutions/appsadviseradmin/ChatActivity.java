@@ -1,11 +1,15 @@
 package com.xbpsolutions.appsadviseradmin;
 
+import android.graphics.Bitmap;
 import android.graphics.Rect;
 import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -19,14 +23,18 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.mikhaellopez.circularimageview.CircularImageView;
+import com.xbpsolutions.appsadviseradmin.Utility.ComplexPreferences;
+import com.yarolegovich.lovelydialog.LovelyStandardDialog;
 
 import java.util.Arrays;
 import java.util.Date;
+import java.util.concurrent.ExecutionException;
 
 public class ChatActivity extends AppCompatActivity implements View.OnClickListener {
 
 
     FirebaseUser user;
+    AppUser appUser;
     private RecyclerView recyclerViewChat;
     private FirebaseRecyclerAdapter<ChatItem, MessageViewHolder>
             mFirebaseAdapter;
@@ -37,6 +45,8 @@ public class ChatActivity extends AppCompatActivity implements View.OnClickListe
     private EditText edMessage;
     private ImageView btnSend;
     private String uID;
+    private Toolbar toolbar;
+    private Bitmap appUserIcon;
 
     @Override
     public void onClick(View v) {
@@ -86,15 +96,20 @@ public class ChatActivity extends AppCompatActivity implements View.OnClickListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);
 
+        uID = getIntent().getExtras().getString("uid");
+        ComplexPreferences complexPreferences = ComplexPreferences.getComplexPreferences(ChatActivity.this, "current_user", 0);
+        appUser = complexPreferences.getObject("user", AppUser.class);
         user = FirebaseAuth.getInstance().getCurrentUser();
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar.setTitle(appUser.name);
+        setSupportActionBar(toolbar);
+
 
         recyclerViewChat = (RecyclerView) findViewById(R.id.recyclerChat);
         mLinearLayoutManager = new LinearLayoutManager(ChatActivity.this);
         mLinearLayoutManager.setStackFromEnd(true);
         recyclerViewChat.setLayoutManager(mLinearLayoutManager);
         recyclerViewChat.addItemDecoration(new VerticalSpaceItemDecoration(4));
-
-        uID = getIntent().getExtras().getString("uid");
 
 
         btnSend = (ImageView) findViewById(R.id.btnSend);
@@ -169,4 +184,55 @@ public class ChatActivity extends AppCompatActivity implements View.OnClickListe
             outRect.bottom = mVerticalSpaceHeight;
         }
     }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_home, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        switch (id) {
+
+            case R.id.action_aboutus:
+
+                displayUserInfo();
+
+                break;
+        }
+
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    private void displayUserInfo() {
+
+        String phone = appUser.manufacturer + " " + appUser.device + " " + appUser.model;
+        String resolution = appUser.resolution;
+        String email = appUser.email;
+        String density = appUser.density;
+
+        String infoString = String.format("Phone - %s \nResolution - %s \nDensity - %s \nEmail - %s", phone, resolution, density, email);
+
+
+        new LovelyStandardDialog(this)
+                .setTopColorRes(R.color.orange)
+                .setIcon(R.drawable.ic_social_person)
+                .setTitle(appUser.name)
+                .setMessage(infoString)
+                .setPositiveButton(android.R.string.ok, new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                    }
+                })
+                .show();
+    }
+
 }

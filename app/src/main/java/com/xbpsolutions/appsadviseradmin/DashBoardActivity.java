@@ -10,6 +10,8 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -22,6 +24,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.mikhaellopez.circularimageview.CircularImageView;
+import com.xbpsolutions.appsadviseradmin.Utility.ComplexPreferences;
 
 public class DashBoardActivity extends AppCompatActivity {
 
@@ -99,6 +102,11 @@ public class DashBoardActivity extends AppCompatActivity {
                     @Override
                     public void onClick(View v) {
 
+                        //store current user and domain in shared preferences
+                        ComplexPreferences complexPreferences = ComplexPreferences.getComplexPreferences(DashBoardActivity.this, "current_user", 0);
+                        complexPreferences.putObject("user", friendlyMessage);
+                        complexPreferences.commit();
+
                         Intent iChat = new Intent(DashBoardActivity.this, ChatActivity.class);
                         iChat.putExtra("uid", friendlyMessage.uid);
                         startActivity(iChat);
@@ -133,6 +141,8 @@ public class DashBoardActivity extends AppCompatActivity {
 
 
     }
+
+
 
     public class VerticalSpaceItemDecoration extends RecyclerView.ItemDecoration {
 

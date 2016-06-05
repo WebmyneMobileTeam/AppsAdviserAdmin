@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">AppsAdviserAdmin</string>
+    <string name="actioninfo">info</string>
 </resources>

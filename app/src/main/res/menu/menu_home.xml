@@ -1,0 +1,15 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.xbpsolutions.appsadviser.HomeActivity">
+
+
+    <item
+        android:id="@+id/action_aboutus"
+        android:icon="@drawable/ic_action_action_info_outline"
+        android:orderInCategory="100"
+        android:title="@string/actioninfo"
+        app:showAsAction="always" />
+
+
+</menu>
