@@ -24,6 +24,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.mikhaellopez.circularimageview.CircularImageView;
 import com.xbpsolutions.appsadviseradmin.Utility.ComplexPreferences;
+import com.xbpsolutions.appsadviseradmin.widgets.SearchDialog;
 import com.yarolegovich.lovelydialog.LovelyStandardDialog;
 
 import java.util.Arrays;
@@ -47,6 +48,7 @@ public class ChatActivity extends AppCompatActivity implements View.OnClickListe
     private String uID;
     private Toolbar toolbar;
     private Bitmap appUserIcon;
+    private ImageView btnSuggest;
 
     @Override
     public void onClick(View v) {
@@ -58,7 +60,18 @@ public class ChatActivity extends AppCompatActivity implements View.OnClickListe
 
                 processSend();
                 break;
+
+            case R.id.btnSuggest:
+
+                displaySearchDialog();
+
+                break;
         }
+    }
+
+    private void displaySearchDialog() {
+        SearchDialog searchDialog = new SearchDialog(ChatActivity.this, android.R.style.Theme_Translucent_NoTitleBar);
+        searchDialog.show();
     }
 
     private void processSend() {
@@ -115,6 +128,9 @@ public class ChatActivity extends AppCompatActivity implements View.OnClickListe
         btnSend = (ImageView) findViewById(R.id.btnSend);
         btnSend.setOnClickListener(this);
         edMessage = (EditText) findViewById(R.id.edMessage);
+
+        btnSuggest = (ImageView) findViewById(R.id.btnSuggest);
+        btnSuggest.setOnClickListener(this);
 
         mFirebaseDatabaseReference = FirebaseDatabase.getInstance().getReference("chats");
 
