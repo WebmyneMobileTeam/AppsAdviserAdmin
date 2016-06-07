@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -93,6 +94,7 @@ public class ChatActivity extends AppCompatActivity implements View.OnClickListe
     public static class MessageViewHolder extends RecyclerView.ViewHolder {
 
         public CircularImageView imgChatIcon;
+        public CircularImageView imgChatIconRight;
         public TextView txtChatText;
 
 
@@ -100,6 +102,7 @@ public class ChatActivity extends AppCompatActivity implements View.OnClickListe
             super(v);
             imgChatIcon = (CircularImageView) itemView.findViewById(R.id.imgChatIcon);
             txtChatText = (TextView) itemView.findViewById(R.id.txtChatText);
+            imgChatIconRight = (CircularImageView) itemView.findViewById(R.id.imgChatIconRight);
 
         }
     }
@@ -151,14 +154,34 @@ public class ChatActivity extends AppCompatActivity implements View.OnClickListe
             protected void populateViewHolder(MessageViewHolder viewHolder,
                                               ChatItem friendlyMessage, int position) {
 
-                viewHolder.txtChatText.setText(friendlyMessage.message);
-                if (friendlyMessage.senderImage != null && !friendlyMessage.senderImage.isEmpty()) {
-                    Glide.with(ChatActivity.this).load(Uri.parse(friendlyMessage.senderImage)).asBitmap().into(viewHolder.imgChatIcon);
+
+                if (friendlyMessage.senderId.equalsIgnoreCase(user.getUid())) {
+
+                    viewHolder.imgChatIcon.setVisibility(View.GONE);
+                    viewHolder.imgChatIconRight.setVisibility(View.VISIBLE);
+                    viewHolder.txtChatText.setGravity(Gravity.RIGHT | Gravity.CENTER_VERTICAL);
+
+                    if (friendlyMessage.senderImage != null && !friendlyMessage.senderImage.isEmpty()) {
+                        Glide.with(ChatActivity.this).load(Uri.parse(friendlyMessage.senderImage)).asBitmap().into(viewHolder.imgChatIconRight);
+                    } else {
+                        viewHolder.imgChatIconRight.setImageResource(R.drawable.ic_customer_service);
+                    }
+
                 } else {
-                    viewHolder.imgChatIcon.setImageResource(R.drawable.ic_customer_service);
+
+                    viewHolder.imgChatIcon.setVisibility(View.VISIBLE);
+                    viewHolder.imgChatIconRight.setVisibility(View.GONE);
+                    viewHolder.txtChatText.setGravity(Gravity.LEFT | Gravity.CENTER_VERTICAL);
+
+                    if (friendlyMessage.senderImage != null && !friendlyMessage.senderImage.isEmpty()) {
+                        Glide.with(ChatActivity.this).load(Uri.parse(friendlyMessage.senderImage)).asBitmap().into(viewHolder.imgChatIcon);
+                    } else {
+                        viewHolder.imgChatIcon.setImageResource(R.drawable.ic_customer_service);
+                    }
+
+
                 }
-
-
+                viewHolder.txtChatText.setText(friendlyMessage.message);
             }
 
         };

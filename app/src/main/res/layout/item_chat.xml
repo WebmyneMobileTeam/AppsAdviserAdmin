@@ -16,11 +16,22 @@
         app:civ_shadow_color="#8BC34A" />
 
     <TextView
-        android:textColor="#494949"
         android:id="@+id/txtChatText"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:layout_marginLeft="16dp"
-        android:fontFamily="sans-serif-smallcaps" />
+        android:layout_marginRight="16dp"
+        android:layout_weight="1"
+        android:fontFamily="sans-serif-smallcaps"
+        android:textColor="#494949" />
+
+    <com.mikhaellopez.circularimageview.CircularImageView
+        android:id="@+id/imgChatIconRight"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        app:civ_border_color="#d1d1d1"
+        app:civ_border_width="1dp"
+        app:civ_shadow="false"
+        app:civ_shadow_color="#8BC34A" />
 
 </LinearLayout>
