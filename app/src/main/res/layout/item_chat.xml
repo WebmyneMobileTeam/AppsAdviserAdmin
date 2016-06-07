@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:id="@+id/linearParentChatItem"
     android:orientation="horizontal"
     android:padding="8dp">
 
@@ -16,12 +17,14 @@
         app:civ_shadow_color="#8BC34A" />
 
     <TextView
+
+        android:background="@drawable/bubble_left"
         android:id="@+id/txtChatText"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"
-        android:layout_weight="1"
+
         android:fontFamily="sans-serif-smallcaps"
         android:textColor="#494949" />
 

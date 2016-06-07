@@ -1,6 +1,7 @@
 package com.xbpsolutions.appsadviseradmin;
 
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.graphics.Rect;
 import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
@@ -8,12 +9,14 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -96,6 +99,7 @@ public class ChatActivity extends AppCompatActivity implements View.OnClickListe
         public CircularImageView imgChatIcon;
         public CircularImageView imgChatIconRight;
         public TextView txtChatText;
+        public LinearLayout linearParentChatItem;
 
 
         public MessageViewHolder(View v) {
@@ -103,6 +107,7 @@ public class ChatActivity extends AppCompatActivity implements View.OnClickListe
             imgChatIcon = (CircularImageView) itemView.findViewById(R.id.imgChatIcon);
             txtChatText = (TextView) itemView.findViewById(R.id.txtChatText);
             imgChatIconRight = (CircularImageView) itemView.findViewById(R.id.imgChatIconRight);
+            linearParentChatItem = (LinearLayout)itemView.findViewById(R.id.linearParentChatItem);
 
         }
     }
@@ -154,13 +159,16 @@ public class ChatActivity extends AppCompatActivity implements View.OnClickListe
             protected void populateViewHolder(MessageViewHolder viewHolder,
                                               ChatItem friendlyMessage, int position) {
 
-
                 if (friendlyMessage.senderId.equalsIgnoreCase(user.getUid())) {
 
+
+                    viewHolder.linearParentChatItem.setGravity(Gravity.RIGHT|Gravity.CENTER_VERTICAL);
                     viewHolder.imgChatIcon.setVisibility(View.GONE);
                     viewHolder.imgChatIconRight.setVisibility(View.VISIBLE);
                     viewHolder.txtChatText.setGravity(Gravity.RIGHT | Gravity.CENTER_VERTICAL);
-
+                    viewHolder.txtChatText.setBackgroundResource(R.drawable.bubble_right);
+                    viewHolder.txtChatText.setTextColor(Color.parseColor("#005BAC"));
+                    viewHolder.txtChatText.setPadding(32,0,32,0);
                     if (friendlyMessage.senderImage != null && !friendlyMessage.senderImage.isEmpty()) {
                         Glide.with(ChatActivity.this).load(Uri.parse(friendlyMessage.senderImage)).asBitmap().into(viewHolder.imgChatIconRight);
                     } else {
@@ -168,11 +176,13 @@ public class ChatActivity extends AppCompatActivity implements View.OnClickListe
                     }
 
                 } else {
-
+                    viewHolder.linearParentChatItem.setGravity(Gravity.LEFT|Gravity.CENTER_VERTICAL);
                     viewHolder.imgChatIcon.setVisibility(View.VISIBLE);
                     viewHolder.imgChatIconRight.setVisibility(View.GONE);
                     viewHolder.txtChatText.setGravity(Gravity.LEFT | Gravity.CENTER_VERTICAL);
-
+                    viewHolder.txtChatText.setBackgroundResource(R.drawable.bubble_left);
+                    viewHolder.txtChatText.setTextColor(Color.parseColor("#E6E6EB"));
+                    viewHolder.txtChatText.setPadding(32,0,32,0);
                     if (friendlyMessage.senderImage != null && !friendlyMessage.senderImage.isEmpty()) {
                         Glide.with(ChatActivity.this).load(Uri.parse(friendlyMessage.senderImage)).asBitmap().into(viewHolder.imgChatIcon);
                     } else {
