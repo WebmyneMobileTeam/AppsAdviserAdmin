@@ -79,7 +79,7 @@ public class ChatActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void processSend() {
-        if (edMessage.getText().toString() != null) {
+        if (edMessage.getText().toString() != null && !edMessage.getText().toString().isEmpty()) {
 
             FirebaseDatabase database = FirebaseDatabase.getInstance();
             DatabaseReference myRefChat = database.getReference("chats");
